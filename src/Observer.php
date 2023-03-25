@@ -7,6 +7,7 @@ use Cspray\AnnotatedContainer\Bootstrap\ServiceGatherer;
 use Cspray\AnnotatedContainer\Bootstrap\ServiceWiringObserver;
 use Labrador\AsyncEvent\EventEmitter;
 use Labrador\AsyncEvent\Listener;
+use Labrador\AsyncEvent\ListenerProvider;
 use Labrador\AsyncEvent\OneTimeListener;
 
 final class Observer extends ServiceWiringObserver {
@@ -28,6 +29,32 @@ final class Observer extends ServiceWiringObserver {
             }
 
             $emitter->register($listener);
+        }
+
+        unset($listenerAndDefinition);
+
+        foreach ($gatherer->getServicesForType(ListenerProvider::class) as $providerAndDefinition) {
+            $provider = $providerAndDefinition->getService();
+            $autowire = $providerAndDefinition->getDefinition()->getAttribute();
+
+            assert($provider instanceof ListenerProvider);
+
+            if ($autowire instanceof ListenerService &&
+                $autowire->getListenerRemoval() === ListenerRemoval::AfterOneEvent) {
+                $provider = new class($provider) implements ListenerProvider {
+
+                    public function __construct(
+                        private readonly ListenerProvider $provider
+                    ) {}
+
+                    public function getListener() : Listener {
+                        return new OneTimeListener($this->provider->getListener());
+                    }
+
+                };
+            }
+
+            $emitter->register($provider);
         }
     }
 }

@@ -24,7 +24,7 @@ class AutowiringListenersTest extends AsyncTestCase {
         $emitter = $container->get(EventEmitter::class);
 
         self::assertInstanceOf(AmpEventEmitter::class, $emitter);
-        self::assertCount(3, $emitter->getListeners('something'));
+        self::assertCount(5, $emitter->getListeners('something'));
     }
 
     public function testOneTimeRemovalRespected() : void {
@@ -36,10 +36,10 @@ class AutowiringListenersTest extends AsyncTestCase {
 
         $first = $emitter->emit(new StandardEvent('something', new \stdClass()))->await();
         sort($first);
-        self::assertSame(['bar', 'baz', 'foo'], array_values($first));
+        self::assertSame(['bar', 'baz', 'foo', 'qux', 'zee'], array_values($first));
 
         $second = $emitter->emit(new StandardEvent('something', new \stdClass()))->await();
         sort($second);
-        self::assertSame(['bar', 'foo'], array_values($second));
+        self::assertSame(['bar', 'foo', 'qux'], array_values($second));
     }
 }
