@@ -5,16 +5,10 @@
       <dir>src</dir>
       <dir>tests</dir>
     </source>
-    <vendor>
-      <package>
-        <name>labrador-kennel/async-event</name>
-        <source>
-          <dir>src</dir>
-        </source>
-      </package>
-    </vendor>
   </scanDirectories>
-  <definitionProviders/>
+  <definitionProviders>
+    <definitionProvider>Labrador\AsyncEvent\Autowire\DefinitionProvider</definitionProvider>
+  </definitionProviders>
   <observers>
     <observer>Labrador\AsyncEvent\Autowire\Observer</observer>
   </observers>

@@ -2,6 +2,7 @@
 
 namespace Labrador\AsyncEvent\Autowire\Tests;
 
+use Labrador\AsyncEvent\Autowire\DefinitionProvider;
 use Labrador\AsyncEvent\Autowire\Initializer;
 use Labrador\AsyncEvent\Autowire\Observer;
 use PHPUnit\Framework\TestCase;
@@ -9,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Labrador\AsyncEvent\Autowire\Initializer
  */
-final class AnnotatedContainerInitializerTest extends TestCase {
+final class InitializerTest extends TestCase {
 
     public function testGetPackageName() : void {
         $actual = (new Initializer())->getPackageName();
@@ -20,7 +21,7 @@ final class AnnotatedContainerInitializerTest extends TestCase {
     public function testGetScanDirectories() : void {
         $actual = (new Initializer())->getRelativeScanDirectories();
 
-        self::assertSame(['src'], $actual);
+        self::assertEmpty($actual);
     }
 
     public function testGetObservers() : void {
@@ -32,6 +33,6 @@ final class AnnotatedContainerInitializerTest extends TestCase {
     public function testGetDefinitionProvider() : void {
         $actual = (new Initializer())->getDefinitionProviderClass();
 
-        self::assertNull($actual);
+        self::assertSame(DefinitionProvider::class, $actual);
     }
 }

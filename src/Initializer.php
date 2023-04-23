@@ -11,7 +11,7 @@ final class Initializer extends ThirdPartyInitializer {
     }
 
     public function getRelativeScanDirectories() : array {
-        return ['src'];
+        return [];
     }
 
     public function getObserverClasses() : array {
@@ -21,6 +21,6 @@ final class Initializer extends ThirdPartyInitializer {
     }
 
     public function getDefinitionProviderClass() : ?string {
-        return null;
+        return DefinitionProvider::class;
     }
 }

@@ -12,7 +12,7 @@ use Labrador\AsyncEvent\StandardEvent;
 /**
  * @covers \Labrador\AsyncEvent\Autowire\Observer
  */
-class AutowiringListenersTest extends AsyncTestCase {
+class ObserverTest extends AsyncTestCase {
 
     private function getContainer() : AnnotatedContainer {
         return (new Bootstrap())->bootstrapContainer();
