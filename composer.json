@@ -11,7 +11,7 @@
   "require-dev": {
     "amphp/phpunit-util": "^v3.0.0-beta.4",
     "php-di/php-di": "^7.0",
-    "phpunit/phpunit": "",
+    "phpunit/phpunit": "^9.6",
     "roave/security-advisories": "dev-latest"
   },
   "autoload": {
