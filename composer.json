@@ -1,15 +1,14 @@
 {
   "name": "labrador-kennel/async-event-autowire",
-  "description": "",
+  "description": "Allows labrador-kennel/async-event Listeners to be autowired into an EventEmitter.",
   "license": ["MIT"],
-  "minimum-stability": "beta",
   "require": {
     "php": "^8.1",
     "cspray/annotated-container": "^2.0",
     "labrador-kennel/async-event": "^3.0"
   },
   "require-dev": {
-    "amphp/phpunit-util": "^v3.0.0-beta.4",
+    "amphp/phpunit-util": "^v3.0",
     "php-di/php-di": "^7.0",
     "phpunit/phpunit": "^9.6",
     "roave/security-advisories": "dev-latest"
