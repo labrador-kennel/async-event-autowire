@@ -5,56 +5,22 @@ namespace Labrador\AsyncEvent\Autowire;
 use Cspray\AnnotatedContainer\AnnotatedContainer;
 use Cspray\AnnotatedContainer\Bootstrap\ServiceGatherer;
 use Cspray\AnnotatedContainer\Bootstrap\ServiceWiringObserver;
-use Labrador\AsyncEvent\EventEmitter;
+use Labrador\AsyncEvent\Emitter;
 use Labrador\AsyncEvent\Listener;
-use Labrador\AsyncEvent\ListenerProvider;
-use Labrador\AsyncEvent\OneTimeListener;
 
 final class Observer extends ServiceWiringObserver {
 
     protected function wireServices(AnnotatedContainer $container, ServiceGatherer $gatherer) : void {
-        $emitter = $container->get(EventEmitter::class);
-        assert($emitter instanceof EventEmitter);
+        $emitter = $container->get(Emitter::class);
+        assert($emitter instanceof Emitter);
 
-        /** @var Listener $listener */
-        foreach ($gatherer->getServicesForType(Listener::class) as $listenerAndDefinition) {
-            $listener = $listenerAndDefinition->getService();
-            $autowire = $listenerAndDefinition->getDefinition()->getAttribute();
+        foreach ($gatherer->getServicesWithAttribute(AutowiredListener::class) as $fromServiceDefinition) {
+            $attribute = $fromServiceDefinition->getDefinition()->getAttribute();
+            assert($attribute instanceof AutowiredListener);
 
-            assert($listener instanceof Listener);
-
-            if ($autowire instanceof ListenerService &&
-                    $autowire->getListenerRemoval() === ListenerRemoval::AfterOneEvent) {
-                $listener = new OneTimeListener($listener);
-            }
-
-            $emitter->register($listener);
+            $emitter->register($attribute->eventName, $fromServiceDefinition->getService());
         }
 
         unset($listenerAndDefinition);
-
-        foreach ($gatherer->getServicesForType(ListenerProvider::class) as $providerAndDefinition) {
-            $provider = $providerAndDefinition->getService();
-            $autowire = $providerAndDefinition->getDefinition()->getAttribute();
-
-            assert($provider instanceof ListenerProvider);
-
-            if ($autowire instanceof ListenerService &&
-                $autowire->getListenerRemoval() === ListenerRemoval::AfterOneEvent) {
-                $provider = new class($provider) implements ListenerProvider {
-
-                    public function __construct(
-                        private readonly ListenerProvider $provider
-                    ) {}
-
-                    public function getListener() : Listener {
-                        return new OneTimeListener($this->provider->getListener());
-                    }
-
-                };
-            }
-
-            $emitter->register($provider);
-        }
     }
 }

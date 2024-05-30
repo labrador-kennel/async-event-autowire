@@ -4,8 +4,10 @@ namespace Labrador\AsyncEvent\Autowire\Tests;
 
 use Cspray\AnnotatedContainer\Definition\ContainerDefinitionBuilder;
 use Cspray\AnnotatedContainer\StaticAnalysis\DefinitionProviderContext;
+use Labrador\AsyncEvent\AmpEmitter;
 use Labrador\AsyncEvent\AmpEventEmitter;
 use Labrador\AsyncEvent\Autowire\DefinitionProvider;
+use Labrador\AsyncEvent\Emitter;
 use Labrador\AsyncEvent\EventEmitter;
 use Labrador\AsyncEvent\EventFactory;
 use Labrador\AsyncEvent\StandardEventFactory;
@@ -50,10 +52,8 @@ class DefinitionProviderTest extends TestCase {
 
     public static function expectedServiceProvider() : array {
         return [
-            EventEmitter::class => [EventEmitter::class],
-            AmpEventEmitter::class => [AmpEventEmitter::class],
-            EventFactory::class => [EventFactory::class],
-            StandardEventFactory::class => [StandardEventFactory::class],
+            Emitter::class => [Emitter::class],
+            AmpEmitter::class => [AmpEmitter::class],
         ];
     }
 

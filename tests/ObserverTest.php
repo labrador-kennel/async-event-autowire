@@ -5,7 +5,10 @@ namespace Labrador\AsyncEvent\Autowire\Tests;
 use Amp\PHPUnit\AsyncTestCase;
 use Cspray\AnnotatedContainer\AnnotatedContainer;
 use Cspray\AnnotatedContainer\Bootstrap\Bootstrap;
+use Labrador\AsyncEvent\AmpEmitter;
 use Labrador\AsyncEvent\AmpEventEmitter;
+use Labrador\AsyncEvent\Emitter;
+use Labrador\AsyncEvent\Event;
 use Labrador\AsyncEvent\EventEmitter;
 use Labrador\AsyncEvent\StandardEvent;
 
@@ -21,25 +24,30 @@ class ObserverTest extends AsyncTestCase {
     public function testEmitOneTime() : void {
         $container = $this->getContainer();
 
-        $emitter = $container->get(EventEmitter::class);
+        $emitter = $container->get(Emitter::class);
 
-        self::assertInstanceOf(AmpEventEmitter::class, $emitter);
-        self::assertCount(5, $emitter->getListeners('something'));
+        self::assertInstanceOf(AmpEmitter::class, $emitter);
+        self::assertCount(3, $emitter->listeners('something'));
     }
 
     public function testOneTimeRemovalRespected() : void {
         $container = $this->getContainer();
 
-        $emitter = $container->get(EventEmitter::class);
+        $emitter = $container->get(Emitter::class);
 
-        self::assertInstanceOf(AmpEventEmitter::class, $emitter);
+        self::assertInstanceOf(AmpEmitter::class, $emitter);
 
-        $first = $emitter->emit(new StandardEvent('something', new \stdClass()))->await();
+        $event = $this->getMockBuilder(Event::class)->getMock();
+        $event->expects($this->any())->method('name')->willReturn('something');
+        $event->expects($this->any())->method('payload')->willReturn(new \stdClass());
+        $event->expects($this->any())->method('triggeredAt')->willReturn(new \DateTimeImmutable());
+
+        $first = $emitter->emit($event)->await();
         sort($first);
-        self::assertSame(['bar', 'baz', 'foo', 'qux', 'zee'], array_values($first));
+        self::assertSame(['bar', 'baz', 'foo'], array_values($first));
 
-        $second = $emitter->emit(new StandardEvent('something', new \stdClass()))->await();
+        $second = $emitter->emit($event)->await();
         sort($second);
-        self::assertSame(['bar', 'foo', 'qux'], array_values($second));
+        self::assertSame(['bar', 'foo'], array_values($second));
     }
 }

@@ -3,19 +3,16 @@
 namespace Labrador\AsyncEvent\Autowire\Tests\Stub;
 
 use Amp\Future;
-use Labrador\AsyncEvent\AbstractListener;
-use Labrador\AsyncEvent\Autowire\ListenerService;
+use Labrador\AsyncEvent\Autowire\AutowiredListener;
 use Labrador\AsyncEvent\Event;
+use Labrador\AsyncEvent\Listener;
 use Labrador\CompositeFuture\CompositeFuture;
 
-#[ListenerService]
-class BarListener extends AbstractListener {
+#[AutowiredListener('something')]
+final class BarListener implements Listener {
 
     public function handle(Event $event) : Future|CompositeFuture|null {
         return Future::complete('bar');
     }
 
-    public function canHandle(string $eventName) : bool {
-        return $eventName === 'something';
-    }
 }
