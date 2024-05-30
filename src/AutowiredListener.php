@@ -6,22 +6,17 @@ use Cspray\AnnotatedContainer\Attribute\ServiceAttribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final class ListenerService implements ServiceAttribute {
+final class AutowiredListener implements ServiceAttribute {
 
     /**
-     * @param ListenerRemoval $listenerRemoval
      * @param list<string> $profiles
      * @param string|null $name
      */
     public function __construct(
-        private readonly ListenerRemoval $listenerRemoval = ListenerRemoval::NeverRemove,
+        public readonly string $eventName,
         private readonly array $profiles = [],
         private readonly ?string $name = null
     ) {
-    }
-
-    public function getListenerRemoval() : ListenerRemoval {
-        return $this->listenerRemoval;
     }
 
     public function getProfiles() : array {

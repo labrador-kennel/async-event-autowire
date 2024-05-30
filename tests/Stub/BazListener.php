@@ -3,20 +3,20 @@
 namespace Labrador\AsyncEvent\Autowire\Tests\Stub;
 
 use Amp\Future;
-use Labrador\AsyncEvent\AbstractListener;
-use Labrador\AsyncEvent\Autowire\ListenerRemoval;
-use Labrador\AsyncEvent\Autowire\ListenerService;
+use Labrador\AsyncEvent\Autowire\AutowiredListener;
 use Labrador\AsyncEvent\Event;
+use Labrador\AsyncEvent\Listener;
+use Labrador\AsyncEvent\ListenerRemovableBasedOnHandleCount;
 use Labrador\CompositeFuture\CompositeFuture;
 
-#[ListenerService(ListenerRemoval::AfterOneEvent)]
-class BazListener extends AbstractListener {
+#[AutowiredListener('something')]
+class BazListener implements Listener, ListenerRemovableBasedOnHandleCount {
 
     public function handle(Event $event) : Future|CompositeFuture|null {
         return Future::complete('baz');
     }
 
-    public function canHandle(string $eventName) : bool {
-        return $eventName === 'something';
+    public function handleLimit() : int {
+        return 1;
     }
 }

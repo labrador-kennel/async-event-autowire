@@ -2,53 +2,40 @@
 
 namespace Labrador\AsyncEvent\Autowire\Tests;
 
-use Labrador\AsyncEvent\Autowire\ListenerRemoval;
-use Labrador\AsyncEvent\Autowire\ListenerService;
+use Labrador\AsyncEvent\Autowire\AutowiredListener;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Labrador\AsyncEvent\Autowire\ListenerService
+ * @covers \Labrador\AsyncEvent\Autowire\AutowiredListener
  */
 class ListenerServiceTest extends TestCase {
 
-    public function testListenerRemovalDefaultsToNeverRemoved() : void {
-        $subject = new ListenerService();
-
-        self::assertSame(ListenerRemoval::NeverRemove, $subject->getListenerRemoval());
-    }
-
-    public function testListenerRemovalRespectsPassedInValues() : void {
-        $subject = new ListenerService(ListenerRemoval::AfterOneEvent);
-
-        self::assertSame(ListenerRemoval::AfterOneEvent, $subject->getListenerRemoval());
-    }
-
     public function testProfilesDefaultsToEmpty() : void {
-        $subject = new ListenerService();
+        $subject = new AutowiredListener('event-name');
 
         self::assertSame([], $subject->getProfiles());
     }
 
     public function testProfilesRespectsProvidedValues() : void {
-        $subject = new ListenerService(profiles: ['foo', 'bar']);
+        $subject = new AutowiredListener('event-name', profiles: ['foo', 'bar']);
 
         self::assertSame(['foo', 'bar'], $subject->getProfiles());
     }
 
     public function testNameDefaultsToNull() : void {
-        $subject = new ListenerService();
+        $subject = new AutowiredListener('event-name');
 
         self::assertNull($subject->getName());
     }
 
     public function testNameRespectsProvidedValue() : void {
-        $subject = new ListenerService(name: 'my-listener');
+        $subject = new AutowiredListener('event-name', name: 'my-listener');
 
         self::assertSame('my-listener', $subject->getName());
     }
 
     public function testIsPrimaryAlwaysFalse() : void {
-        $subject = new ListenerService();
+        $subject = new AutowiredListener('event-name');
 
         self::assertFalse($subject->isPrimary());
     }
