@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<annotatedContainer xmlns="https://annotated-container.cspray.io/schema/annotated-container.xsd">
+<annotatedContainer xmlns="https://annotated-container.cspray.io/schema/annotated-container.xsd" version="3.0.0.0-alpha">
   <scanDirectories>
     <source>
       <dir>src</dir>
       <dir>tests</dir>
     </source>
+    <vendor/>
   </scanDirectories>
   <definitionProviders>
     <definitionProvider>Labrador\AsyncEvent\Autowire\DefinitionProvider</definitionProvider>
   </definitionProviders>
-  <observers>
-    <observer>Labrador\AsyncEvent\Autowire\Observer</observer>
-  </observers>
 </annotatedContainer>

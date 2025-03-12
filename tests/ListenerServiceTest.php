@@ -13,25 +13,25 @@ class ListenerServiceTest extends TestCase {
     public function testProfilesDefaultsToEmpty() : void {
         $subject = new AutowiredListener('event-name');
 
-        self::assertSame([], $subject->getProfiles());
+        self::assertSame([], $subject->profiles());
     }
 
     public function testProfilesRespectsProvidedValues() : void {
         $subject = new AutowiredListener('event-name', profiles: ['foo', 'bar']);
 
-        self::assertSame(['foo', 'bar'], $subject->getProfiles());
+        self::assertSame(['foo', 'bar'], $subject->profiles());
     }
 
     public function testNameDefaultsToNull() : void {
         $subject = new AutowiredListener('event-name');
 
-        self::assertNull($subject->getName());
+        self::assertNull($subject->name());
     }
 
     public function testNameRespectsProvidedValue() : void {
         $subject = new AutowiredListener('event-name', name: 'my-listener');
 
-        self::assertSame('my-listener', $subject->getName());
+        self::assertSame('my-listener', $subject->name());
     }
 
     public function testIsPrimaryAlwaysFalse() : void {

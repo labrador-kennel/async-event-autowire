@@ -4,21 +4,20 @@ namespace Labrador\AsyncEvent\Autowire;
 
 use Cspray\AnnotatedContainer\AnnotatedContainer;
 use Cspray\AnnotatedContainer\Bootstrap\ServiceGatherer;
-use Cspray\AnnotatedContainer\Bootstrap\ServiceWiringObserver;
+use Cspray\AnnotatedContainer\Bootstrap\ServiceWiringListener;
 use Labrador\AsyncEvent\Emitter;
-use Labrador\AsyncEvent\Listener;
 
-final class Observer extends ServiceWiringObserver {
+final class RegisterAutowiredListener extends ServiceWiringListener {
 
     protected function wireServices(AnnotatedContainer $container, ServiceGatherer $gatherer) : void {
         $emitter = $container->get(Emitter::class);
         assert($emitter instanceof Emitter);
 
-        foreach ($gatherer->getServicesWithAttribute(AutowiredListener::class) as $fromServiceDefinition) {
-            $attribute = $fromServiceDefinition->getDefinition()->getAttribute();
+        foreach ($gatherer->servicesWithAttribute(AutowiredListener::class) as $fromServiceDefinition) {
+            $attribute = $fromServiceDefinition->definition()->attribute();
             assert($attribute instanceof AutowiredListener);
 
-            $emitter->register($attribute->eventName, $fromServiceDefinition->getService());
+            $emitter->register($attribute->eventName, $fromServiceDefinition->service());
         }
 
         unset($listenerAndDefinition);

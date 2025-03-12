@@ -4,7 +4,7 @@ namespace Labrador\AsyncEvent\Autowire\Tests;
 
 use Labrador\AsyncEvent\Autowire\DefinitionProvider;
 use Labrador\AsyncEvent\Autowire\Initializer;
-use Labrador\AsyncEvent\Autowire\Observer;
+use Labrador\AsyncEvent\Autowire\RegisterAutowiredListener;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,25 +13,19 @@ use PHPUnit\Framework\TestCase;
 final class InitializerTest extends TestCase {
 
     public function testGetPackageName() : void {
-        $actual = (new Initializer())->getPackageName();
+        $actual = (new Initializer())->packageName();
 
         self::assertSame('labrador-kennel/async-event', $actual);
     }
 
     public function testGetScanDirectories() : void {
-        $actual = (new Initializer())->getRelativeScanDirectories();
+        $actual = (new Initializer())->relativeScanDirectories();
 
         self::assertEmpty($actual);
     }
 
-    public function testGetObservers() : void {
-        $actual = (new Initializer())->getObserverClasses();
-
-        self::assertSame([Observer::class], $actual);
-    }
-
     public function testGetDefinitionProvider() : void {
-        $actual = (new Initializer())->getDefinitionProviderClass();
+        $actual = (new Initializer())->definitionProviderClass();
 
         self::assertSame(DefinitionProvider::class, $actual);
     }

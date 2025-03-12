@@ -10,7 +10,11 @@
   ],
   "require": {
     "php": "^8.2",
-    "cspray/annotated-container": "^2.0",
+    "cspray/annotated-container": "^3.0.0-alpha",
+    "cspray/annotated-container-adr": "^4.0.0-alpha",
+    "cspray/annotated-container-attribute": "^2.0.0-alpha.7",
+    "cspray/annotated-target": "^v2.0.0.alpha.2",
+    "cspray/architectural-decision": "^v3.0.0.alpha.2",
     "labrador-kennel/async-event": "^4.0"
   },
   "require-dev": {
