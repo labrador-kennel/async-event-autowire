@@ -6,14 +6,18 @@ use Cspray\AnnotatedContainer\StaticAnalysis\DefinitionProvider as AnnotatedCont
 use Cspray\AnnotatedContainer\StaticAnalysis\DefinitionProviderContext;
 use Labrador\AsyncEvent\AmpEmitter;
 use Labrador\AsyncEvent\Emitter;
-use function Cspray\AnnotatedContainer\service;
-use function Cspray\Typiphy\objectType;
+use function Cspray\AnnotatedContainer\Definition\service;
+use function Cspray\AnnotatedContainer\Reflection\types;
 
 class DefinitionProvider implements AnnotatedContainerDefinitionProvider {
 
     public function consume(DefinitionProviderContext $context) : void {
-        service($context, objectType(Emitter::class));
-        service($context, objectType(AmpEmitter::class));
+        $context->addServiceDefinition(
+            service(types()->class(Emitter::class))
+        );
+        $context->addServiceDefinition(
+            service(types()->class(AmpEmitter::class))
+        );
     }
 
 }

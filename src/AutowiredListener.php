@@ -19,7 +19,7 @@ final class AutowiredListener implements ServiceAttribute {
     ) {
     }
 
-    public function getProfiles() : array {
+    public function profiles() : array {
         return  $this->profiles;
     }
 
@@ -27,7 +27,7 @@ final class AutowiredListener implements ServiceAttribute {
         return false;
     }
 
-    public function getName() : ?string {
+    public function name() : ?string {
         return $this->name;
     }
 }

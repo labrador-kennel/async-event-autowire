@@ -6,21 +6,15 @@ use Cspray\AnnotatedContainer\Bootstrap\ThirdPartyInitializer;
 
 final class Initializer extends ThirdPartyInitializer {
 
-    public function getPackageName() : string {
+    public function packageName() : string {
         return 'labrador-kennel/async-event';
     }
 
-    public function getRelativeScanDirectories() : array {
+    public function relativeScanDirectories() : array {
         return [];
     }
 
-    public function getObserverClasses() : array {
-        return [
-            Observer::class
-        ];
-    }
-
-    public function getDefinitionProviderClass() : ?string {
+    public function definitionProviderClass() : ?string {
         return DefinitionProvider::class;
     }
 }

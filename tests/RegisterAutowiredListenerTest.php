@@ -5,20 +5,24 @@ namespace Labrador\AsyncEvent\Autowire\Tests;
 use Amp\PHPUnit\AsyncTestCase;
 use Cspray\AnnotatedContainer\AnnotatedContainer;
 use Cspray\AnnotatedContainer\Bootstrap\Bootstrap;
+use Cspray\AnnotatedContainer\ContainerFactory\PhpDiContainerFactory;
 use Labrador\AsyncEvent\AmpEmitter;
-use Labrador\AsyncEvent\AmpEventEmitter;
+use Labrador\AsyncEvent\Autowire\RegisterAutowiredListener;
 use Labrador\AsyncEvent\Emitter;
 use Labrador\AsyncEvent\Event;
-use Labrador\AsyncEvent\EventEmitter;
-use Labrador\AsyncEvent\StandardEvent;
 
 /**
- * @covers \Labrador\AsyncEvent\Autowire\Observer
+ * @covers \Labrador\AsyncEvent\Autowire\RegisterAutowiredListener
  */
-class ObserverTest extends AsyncTestCase {
+class RegisterAutowiredListenerTest extends AsyncTestCase {
 
     private function getContainer() : AnnotatedContainer {
-        return (new Bootstrap())->bootstrapContainer();
+        $emitter = new \Cspray\AnnotatedContainer\Event\Emitter();
+        $emitter->addListener(new RegisterAutowiredListener());
+        return Bootstrap::fromAnnotatedContainerConventions(
+            new PhpDiContainerFactory($emitter),
+            $emitter
+        )->bootstrapContainer();
     }
 
     public function testEmitOneTime() : void {
